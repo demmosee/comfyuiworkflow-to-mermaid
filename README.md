@@ -20,6 +20,12 @@ It can help you quickly understand the workflow's process and logic without bein
 
 ### Getting Started:
 Download the latest release package, open wf2mermaid.exe, drag the comfyuiworkflow json into the webui interface to display the workflow's mermaid chart.
+Or you can just download the code and set up a simple python environment. 
+pip install Flash
+pip install webcolor
+Then run app.py:
+python app.py
+
 ## Configuring Mermaid Styles (`Mermaid_config.json`)
 Customize your Mermaid diagrams using `Mermaid_config.json`. If this file is missing or invalid, default settings are applied.
 ### 1. General Configuration
