@@ -14,7 +14,7 @@ def get_base_path():
         return os.path.dirname(os.path.abspath(__file__))
 
 BASE_DIR = get_base_path()
-# print(f"DEBUG: Application Base Directory determined as: {BASE_DIR}") # 用于调试，可以注释掉
+# print(f"DEBUG: Application Base Directory determined as: {BASE_DIR}") 
 
 # --- Application Base Default Configuration ---
 APP_BASE_DEFAULTS = {
@@ -224,10 +224,8 @@ def serve_index():
 
 # --- Start Server ---
 if __name__ == '__main__':
-    # 对于分发版本，debug通常应为False。
-    # 如果你希望通过配置控制，可以从配置文件加载此设置。
-    # 为了保持与原始代码一致，这里暂时设为True，但建议在打包发布时设为False。
-    DEBUG_MODE = False
+
+    DEBUG_MODE = True
 
     server_port = get_server_startup_config()
     url_to_open = f"http://127.0.0.1:{server_port}"
