@@ -3,7 +3,7 @@ import os
 import numbers
 import traceback  # Keep for error handling
 
-
+# --- Import the style and shape functions ---
 try:
     # --- MODIFIED: Import new combined function and syntax getter ---
     from mermaid_styles import (
