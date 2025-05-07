@@ -1,3 +1,4 @@
+# mermaid_styles.py
 
 import re
 
