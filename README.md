@@ -62,9 +62,10 @@ Keys are node types (e.g., "LoadImage"). Values are objects with style and/or sh
 ```json
 "Node_Styles": {
   "LoadImage": { "style": "loaderStyle", "shape": "subroutine" },
-  "PreviewImage": { "shape": "round" } // Style inherited
+  "PreviewImage": { "shape": "round" } 
 }
 ```
+// Style inherited
 Node Group (Node_Group_Styles): Styles for nodes within a defined group.
 
 An array of objects, each with group_name, style, and/or shape.
@@ -103,16 +104,19 @@ type: "from_node": Links originating from a single_node (type) or a group_name.
 ```
 ```json
 { "type": "from_node", "single_node": "LoadImage", "style": "stroke:green" }
-type: "to_node": Links ending at a single_node (type) or a group_name.
 ```
+type: "to_node": Links ending at a single_node (type) or a group_name.
+
 ```json
 { "type": "to_node", "group_name": "output_group", "style": "stroke:purple", "add_link_label": false }
-type: "group_to_group": Between group_name_1 and group_name_2. Bidirectional.
 ```
+type: "group_to_group": Between group_name_1 and group_name_2. Bidirectional.
+
 ```json
 { "type": "group_to_group", "group_name_1": "vae_nodes", "group_name_2": "sampler_nodes", "connector": "---" }
-Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE", "MODEL").
 ```
+Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE", "MODEL").
+
 ```json
 "Data_Type_Link_Styles": [
   { "data_type": "IMAGE", "style": "stroke:cyan,stroke-width:2px" },
@@ -121,13 +125,14 @@ Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE",
 ```
 Default Link Settings: Fallbacks (Default_Connector, Add_Link_Labels in General Configuration).
 
-Link Styling Priority:
-
-Point-to-Point (Link_Styles)
-Point-to-Group (Link_Group_Styles with type: "single_to_group")
-From/To Node/Group (Link_Group_Styles with type: "from_node" or type: "to_node")
-Group-to-Group (Link_Group_Styles with type: "group_to_group")
-Data Type (Data_Type_Link_Styles)
-Default Link Settings. Higher priority settings override lower ones for the properties they define (connector, style, or add_link_label).
-Omitting Parameters
-If a styling rule (for nodes or links) doesn't specify a parameter (e.g., shape for nodes, style for links), that parameter's value will be determined by the next applicable rule in the priority list or by the global defaults.
+**Link Styling Priority:**
+*   Point-to-Point (`Link_Styles`)
+*   Point-to-Group (`Link_Group_Styles` with `type: "single_to_group"`)
+*   From/To Node/Group (`Link_Group_Styles` with `type: "from_node"` or `type: "to_node"`)
+*   Group-to-Group (`Link_Group_Styles` with `type: "group_to_group"`)
+*   Data Type (`Data_Type_Link_Styles`)
+*   Default Link Settings.
+*Higher priority settings override lower ones for the properties they define (connector, style, or add_link_label).*
+### Omitting Parameters
+If a styling rule (for nodes or links) doesn't specify a parameter (e.g., `shape` for nodes, `style` for links), that parameter's value will be determined by the next applicable rule in the priority list or by the global defaults.
+展开
