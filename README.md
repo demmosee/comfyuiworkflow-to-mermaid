@@ -80,6 +80,26 @@ Node Styling Priority:
 Specific Node Type (Node_Styles) > Node Group (Node_Group_Styles) > Default Node Settings.
 Higher priority settings override lower ones for the properties they define (style or shape).
 
+### Supported Node Shapes
+When configuring node styles (in `Node_Styles`, `Node_Group_Styles`, or `Default_Node_Shape`), you can use the following values for the `shape` property:
+*   `rectangle` (Default if not specified elsewhere)
+*   `round`
+*   `stadium`
+*   `subroutine`
+*   `cylinder` (also aliased as `database`)
+*   `circle`
+*   `rhombus` (also aliased as `diamond`)
+*   `hexagon`
+*   `parallelogram`
+*   `parallelogram_alt`
+*   `trapezoid`
+*   `trapezoid_alt`
+*   `double_circle`
+*   `database` (Mermaid's term for a cylinder shape, often used for data stores)
+
+
+
+
 ### 5. Link Styling
 Customize link appearance (connector, style, label visibility) using various rules. Each rule can specify connector, style (CSS string or alias), and/or add_link_label (boolean).
 
@@ -126,6 +146,25 @@ Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE",
 ```
  // Override global
 Default Link Settings: Fallbacks (Default_Connector, Add_Link_Labels in General Configuration).
+
+Supported Link Connector Styles
+When configuring link styles (in Link_Styles, Link_Group_Styles, or Default_Connector), you can use the following values for the connector property:
+
+--> (Solid line with arrow)
+--- (Solid line, no arrow)
+-.-> (Dotted line with arrow)
+-.- (Dotted line, no arrow)
+==> (Thick solid line with arrow)
+=== (Thick solid line, no arrow)
+--o (Solid line with circle at end)
+o-- (Solid line with circle at start)
+o--o (Solid line with circle at both ends)
+--x (Solid line with cross at end)
+x-- (Solid line with cross at start)
+x--x (Solid line with cross at both ends)
+<--> (Solid line with arrows at both ends)
+<-.-> (Dotted line with arrows at both ends)
+<==> (Thick solid line with arrows at both ends)
 
 **Link Styling Priority:**
 *   Point-to-Point (`Link_Styles`)
