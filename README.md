@@ -1,4 +1,4 @@
-## comfyuiworkflow-to-mermaid
+### comfyuiworkflow-to-mermaid
 Converts ComfyUI workflows into clear Mermaid diagrams. Features a WebUI for one-click conversion of .json/PNG workflow files with direct diagram rendering, zoom, and pan. Supports extensive custom styling for nodes, groups, and links via flexible strategies. Includes automatic dark mode adaptation for diagrams.
 
 Turning some seemingly messy ComfyUI workflows, like this:
@@ -6,7 +6,7 @@ Turning some seemingly messy ComfyUI workflows, like this:
 Into clear and simple mermaid charts like this:
 ![image](https://github.com/user-attachments/assets/d72edaa4-15c2-498b-9d55-f0e026e3f0d7)
 
-##Key Features:
+### Key Features:
 1. Convert any ComfyUI workflow (.json/.png) to Mermaid and display it on the web UI.
 2. Freely choose default Mermaid styles, node styles, and connection styles.
 3. Freely change the display style of the workflow in the Mermaid chart through multiple built-in strategies.
