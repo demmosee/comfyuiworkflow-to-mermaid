@@ -34,13 +34,13 @@ Global settings for the diagram:
     *   Example: `"App_Port": 5567`
 ### 2. Style Definitions (`Style_Definitions`)
 Define reusable style aliases. The key is your alias name, and the value is the Mermaid CSS string.
-```json
+<JSON>
 "Style_Definitions": {
   "loaderStyle": "fill:#ccf,stroke:#555",
   "importantLink": "stroke:red,stroke-width:3px"
 }
-收起
-3. Node Group Definitions (Node_Group)
+
+### 3. Node Group Definitions (Node_Group)
 Map ComfyUI node types to custom group names. These group names are used for group-based styling.
 
 group_name: Your custom name for the group.
@@ -52,7 +52,7 @@ nodes: An array of ComfyUI node type strings belonging to this group.
     "nodes": ["VAEDecode", "VAEEncode", "VAELoader"]
   }
 ]
-4. Node Styling
+### 4. Node Styling
 You can style nodes based on their specific type, the group they belong to, or use a default style. Each rule can specify style (CSS string or alias) and/or shape.
 
 Specific Node Type (Node_Styles): Styles for individual ComfyUI node types.
@@ -76,7 +76,7 @@ Node Styling Priority:
 Specific Node Type (Node_Styles) > Node Group (Node_Group_Styles) > Default Node Settings.
 Higher priority settings override lower ones for the properties they define (style or shape).
 
-5. Link Styling
+### 5. Link Styling
 Customize link appearance (connector, style, label visibility) using various rules. Each rule can specify connector, style (CSS string or alias), and/or add_link_label (boolean).
 
 Point-to-Point (Link_Styles): For links between specific start_node_type and end_node_type.
