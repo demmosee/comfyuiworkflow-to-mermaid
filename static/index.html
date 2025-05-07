@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>ComfyUI Workflow to Mermaid Viewer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-mode">
+    <div id="graph-container">
+        <div id="mermaid-diagram">
+            <div id="instructions">
+                 <p>Drag & Drop ComfyUI Workflow (.json, .png) file here</p>
+                 <p>or click the "Load Workflow" button</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="controls">
+        <button id="history-toggle-button" title="Show/Hide History">
+            <svg viewBox="0 0 219.15 219.15" xmlns="http://www.w3.org/2000/svg" xml:space="preserve">
+                <g>
+                    <path d="M109.575,0C49.156,0,0.001,49.155,0.001,109.574c0,60.42,49.154,109.576,109.573,109.576 c60.42,0,109.574-49.156,109.574-109.576C219.149,49.155,169.995,0,109.575,0z M109.575,204.15 c-52.148,0-94.573-42.427-94.573-94.576C15.001,57.426,57.427,15,109.575,15c52.148,0,94.574,42.426,94.574,94.574 C204.149,161.724,161.723,204.15,109.575,204.15z"/>
+                    <path d="M166.112,108.111h-52.051V51.249c0-4.142-3.357-7.5-7.5-7.5c-4.142,0-7.5,3.358-7.5,7.5v64.362c0,4.142,3.358,7.5,7.5,7.5 h59.551c4.143,0,7.5-3.358,7.5-7.5C173.612,111.469,170.254,108.111,166.112,108.111z"/>
+                </g>
+            </svg>
+        </button>
+        <button id="load-button" title="Load Workflow file (.json, .png)">Load Workflow</button>
+        <button id="show-code-button" title="Show/Hide Mermaid Code" disabled>View Code</button>
+        <button id="reset-view-button" title="Reset view zoom and pan" disabled>Reset View</button>
+        <button id="reload-diagram-button" title="Reload/Re-render current diagram" disabled>
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                <path d="M27.1 14.313V5.396L24.158 8.34c-2.33-2.325-5.033-3.503-8.11-3.503C9.902 4.837 4.901 9.847 4.899 16c.001 6.152 5.003 11.158 11.15 11.16 4.276 0 9.369-2.227 10.836-8.478l.028-.122h-3.23l-.022.068c-1.078 3.242-4.138 5.421-7.613 5.421a8 8 0 0 1-5.691-2.359A7.993 7.993 0 0 1 8 16.001c0-4.438 3.611-8.049 8.05-8.049 2.069 0 3.638.58 5.924 2.573l-3.792 3.789H27.1z"/>
+            </svg>
+        </button>
+        <span id="current-workflow-name-display" title="Current workflow file name"></span>
+        <input type="file" id="file-input" accept=".json,image/png,image/jpeg,image/webp" style="display: none;">
+    </div>
+
+    <div id="top-right-controls">
+        <button id="settings-button" title="Mermaid Settings">⚙️</button>
+        <button id="ui-theme-toggle" title="Toggle Light/Dark Mode">☀️</button>
+        <select id="mermaid-theme-selector" title="Select Mermaid chart theme">
+            <option value="neutral">Neutral</option>
+            <option value="default">Default</option>
+            <option value="forest">Forest</option>
+        </select>
+    </div>
+
+    <div id="history-panel">
+        <div id="history-header">
+            <h3>History</h3>
+            <button id="close-history-button" title="Close History">&times;</button>
+        </div>
+        <ul id="history-list">
+            <li class="no-history">No history yet</li>
+        </ul>
+    </div>
+
+    <div id="status"></div>
+
+    <div id="code-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="close-code-button" class="close-button" title="Close">&times;</span>
+            <h2>Mermaid Code</h2>
+            <textarea id="mermaid-code-modal" readonly placeholder="Converted Mermaid code will appear here..."></textarea>
+            <button id="copy-button-modal" disabled>Copy Mermaid Code</button>
+            <span id="copy-feedback-modal" class="copy-feedback"></span>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span id="close-settings-button" class="close-button" title="Close">&times;</span>
+            <h2>Mermaid Settings</h2>
+            <div class="settings-form">
+                <div class="setting-item">
+                    <label for="setting-graph-direction">Graph Direction:</label>
+                    <select id="setting-graph-direction">
+                        <option value="TD">Top to Down (TD/TB)</option> <!-- Merged TD/TB for simplicity -->
+                        <option value="LR">Left to Right (LR)</option>
+                        <option value="BT">Bottom to Top (BT)</option>
+                        <option value="RL">Right to Left (RL)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="setting-group-nodes">Group Nodes (Subgraphs):</label>
+                    <select id="setting-group-nodes">
+                        <option value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="setting-add-link-labels">Add Link Labels:</label>
+                    <select id="setting-add-link-labels">
+                        <option value="true">Yes (Show text on links)</option>
+                        <option value="false">No (Hide text on links)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="setting-default-connector">Default Connector:</label>
+                    <select id="setting-default-connector">
+                        <option value="-->">Arrow (--&gt;)</option>
+                        <option value="---">Line (---)</option>
+                        <option value="-.->">Dashed Arrow (-.-&gt;)</option>
+                        <option value="-.-">Dashed Line (-.-)</option>
+                        <option value="==>">Thick Arrow (==&gt;)</option>
+                        <option value="===">Thick Line (===)</option>
+                        <option value="--o">Arrow Circle (--o)</option>
+                        <option value="o--">Circle Arrow (o--)</option>
+                        <option value="o--o">Circle Circle (o--o)</option>
+                        <option value="--x">Arrow Cross (--x)</option>
+                        <option value="x--">Cross Arrow (x--)</option>
+                        <option value="x--x">Cross Cross (x--x)</option>
+                        <option value="<-->">Bidirectional Arrow (&lt;--&gt;)</option>
+                        <option value="<-.->">Bidirectional Dashed Arrow (&lt;-.->)</option>
+                        <option value="<==>">Bidirectional Thick Arrow (&lt;==&gt;)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label for="setting-default-shape">Default Node Shape:</label>
+                    <select id="setting-default-shape">
+                        <option value="rectangle">Rectangle [ ]</option>
+                        <option value="round">Round ( )</option>
+                        <option value="stadium">Stadium ([ ])</option>
+                        <option value="subroutine">Subroutine [[ ]]</option>
+                        <option value="cylinder">Cylinder [( )]</option>
+                        <option value="circle">Circle (( ))</option>
+                        <option value="rhombus">Rhombus { }</option>
+                        <option value="hexagon">Hexagon {{ }}</option>
+                        <option value="parallelogram">Parallelogram [/ /]</option>
+                        <option value="parallelogram_alt">Alt Parallelogram [\ \]</option>
+                        <option value="trapezoid">Trapezoid [/ \]</option>
+                        <option value="trapezoid_alt">Alt Trapezoid [\ /]</option>
+                        <option value="double_circle">Double Circle ((( )))</option>
+                        <option value="database">Database [( )]</option> <!-- Visually similar to cylinder -->
+                    </select>
+                </div>
+            </div>
+            <button id="save-settings-button">Save and Rerender</button>
+            <span id="settings-feedback" class="copy-feedback"></span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

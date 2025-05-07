@@ -1,0 +1,614 @@
+/* Basic reset and full page setup */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow: hidden; /* IMPORTANT: Prevent body scrollbars */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth theme transition */
+}
+
+/* MODIFIED: Styles for Icon Buttons (History and Reload) */
+#history-toggle-button,
+#reload-diagram-button {
+    padding: 8px 10px; /* Consistent padding, adjust as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* line-height: 1; /* Optional: May help normalize height */
+}
+
+#history-toggle-button svg,
+#reload-diagram-button svg {
+    width: 1.1em;  /* Adjust to desired size relative to button font-size */
+    height: 1.1em; /* Adjust to desired size */
+    fill: currentColor; /* This makes the SVG color adapt to the button's text color */
+    /* vertical-align: middle; /* Not strictly necessary with flex centering */
+}
+/* END MODIFICATION */
+
+
+/* NEW: History Panel Styles */
+#history-panel {
+    position: fixed;
+    top: 0;
+    left: -300px;
+    width: 280px;
+    height: 100%;
+    z-index: 50;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    transition: left 0.3s ease-in-out;
+}
+#history-panel.visible {
+    left: 0;
+}
+#history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    flex-shrink: 0;
+}
+#history-header h3 {
+    margin: 0;
+    font-size: 1.1em;
+}
+#close-history-button {
+    background: none;
+    border: none;
+    font-size: 1.8em;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 5px;
+}
+#history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: auto;
+    flex-grow: 1;
+}
+#history-list li {
+    padding: 10px 15px;
+    cursor: pointer;
+    border-bottom: 1px solid;
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color 0.2s ease;
+}
+#history-list li:last-child {
+    border-bottom: none;
+}
+#history-list li .history-item-name {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+#history-list li .history-item-details {
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+#history-list li.no-history {
+    text-align: center;
+    padding: 20px;
+    cursor: default;
+    opacity: 0.6;
+}
+body.dark-mode #history-panel {
+    background-color: #2e2e2e;
+    color: #eee;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.5);
+}
+body.dark-mode #history-header {
+    border-bottom: 1px solid #444;
+}
+body.dark-mode #close-history-button {
+    color: #aaa;
+}
+body.dark-mode #close-history-button:hover {
+    color: #fff;
+}
+body.dark-mode #history-list li {
+    border-bottom-color: #444;
+}
+body.dark-mode #history-list li:hover:not(.no-history) {
+    background-color: #3a3a3a;
+}
+body.dark-mode #history-list li .history-item-details {
+    color: #bbb;
+}
+body.light-mode #history-panel {
+    background-color: #f8f8f8;
+    color: #333;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.15);
+}
+body.light-mode #history-header {
+    border-bottom: 1px solid #ddd;
+}
+body.light-mode #close-history-button {
+    color: #888;
+}
+body.light-mode #close-history-button:hover {
+    color: #000;
+}
+body.light-mode #history-list li {
+    border-bottom-color: #eee;
+}
+body.light-mode #history-list li:hover:not(.no-history) {
+    background-color: #eee;
+}
+body.light-mode #history-list li .history-item-details {
+    color: #666;
+}
+body.history-panel-visible #controls {
+    /* left: 300px; */
+    /* transition: left 0.3s ease-in-out; */
+}
+
+#controls select:disabled,
+#top-right-controls select:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #ccc;
+    color: #666;
+}
+body.dark-mode #controls select:disabled,
+body.dark-mode #top-right-controls select:disabled {
+    background-color: #3a3a3a;
+    color: #888;
+    border-color: #555;
+}
+
+/* ------------------------- */
+/* ----- Dark Mode CSS ----- */
+/* ------------------------- */
+body.dark-mode {
+    background-color: #2a2a2a;
+    color: #eee;
+}
+body.dark-mode #graph-container {
+    background-color: #1e1e1e;
+    border: 1px solid #444;
+    cursor: grab;
+}
+body.dark-mode #graph-container.grabbing { cursor: grabbing; }
+body.dark-mode #graph-container.dragover {
+    background-color: #333;
+    box-shadow: inset 0 0 15px rgba(0, 150, 255, 0.5);
+}
+body.dark-mode #instructions {
+    color: #888;
+}
+body.dark-mode #controls,
+body.dark-mode #top-right-controls {
+    background: rgba(40, 40, 40, 0.85);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+body.dark-mode #controls button,
+body.dark-mode #controls select,
+body.dark-mode #top-right-controls button,
+body.dark-mode #top-right-controls select {
+    background-color: #444;
+    color: #eee; /* SVG icons will inherit this color in dark mode */
+    border: 1px solid #666;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 8px 12px; /* General button padding */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+/* Icon-specific padding is handled by the #history-toggle-button, #reload-diagram-button rule */
+
+body.dark-mode #controls select,
+body.dark-mode #top-right-controls select {
+    padding-right: 25px;
+}
+body.dark-mode #controls button:hover:not(:disabled),
+body.dark-mode #controls select:hover:not(:disabled),
+body.dark-mode #top-right-controls button:hover:not(:disabled),
+body.dark-mode #top-right-controls select:hover:not(:disabled) {
+    background-color: #555;
+    border-color: #888;
+}
+body.dark-mode #controls button:disabled,
+body.dark-mode #top-right-controls button:disabled {
+    background-color: #3a3a3a;
+    color: #888; /* Disabled SVG icons will inherit this color */
+    cursor: not-allowed;
+    border-color: #555;
+}
+body.dark-mode #status {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: #eee;
+}
+body.dark-mode #status.error { color: #ffaaaa; }
+body.dark-mode #status.success { color: #aaffaa; }
+body.dark-mode #status.processing { color: #aaaaff; }
+body.dark-mode #status.warning { color: #ffddaa; }
+body.dark-mode .render-error {
+    color: #ffaaaa;
+    background-color: rgba(80, 0, 0, 0.4);
+    border: 1px solid #a55;
+}
+body.dark-mode .modal-content {
+    background-color: #3a3a3a;
+    color: #eee;
+    border: 1px solid #666;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.7);
+}
+body.dark-mode .close-button { color: #aaa; }
+body.dark-mode .close-button:hover, body.dark-mode .close-button:focus { color: #fff; }
+body.dark-mode .modal h2 { border-bottom: 1px solid #555; }
+body.dark-mode #mermaid-code-modal {
+    background-color: #282828;
+    color: #eee;
+    border: 1px solid #555;
+}
+body.dark-mode #copy-button-modal {
+    background-color: #007bff;
+    color: white;
+}
+body.dark-mode #copy-button-modal:hover:not(:disabled) { background-color: #0056b3; }
+body.dark-mode #copy-button-modal:disabled { background-color: #555; }
+body.dark-mode .copy-feedback { color: #aaffaa; }
+body.dark-mode #mermaid-diagram svg .cluster rect,
+body.dark-mode #mermaid-diagram svg .subgraph rect {
+    fill: #2f2f2f !important;
+    stroke: #666 !important;
+}
+body.dark-mode #mermaid-diagram svg .cluster text,
+body.dark-mode #mermaid-diagram svg .subgraph text {
+    fill: #ccc !important;
+}
+body.dark-mode #mermaid-diagram svg .node rect,
+body.dark-mode #mermaid-diagram svg .node polygon,
+body.dark-mode #mermaid-diagram svg .node ellipse {
+}
+body.dark-mode #mermaid-diagram svg .node text {
+}
+body.dark-mode #mermaid-diagram svg .edgeLabel {
+    fill: #ccc !important;
+    background-color: #333 !important;
+}
+body.dark-mode #mermaid-diagram svg .edgeLabel rect {
+    opacity: 0.8;
+}
+body.dark-mode #current-workflow-name-display {
+    color: #bbb;
+}
+
+/* -------------------------- */
+/* ----- Light Mode CSS ----- */
+/* -------------------------- */
+body.light-mode {
+    background-color: #f4f4f4;
+    color: #333;
+}
+body.light-mode #graph-container {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    cursor: grab;
+}
+body.light-mode #graph-container.grabbing { cursor: grabbing; }
+body.light-mode #graph-container.dragover {
+    background-color: #e8e8e8;
+    box-shadow: inset 0 0 15px rgba(0, 100, 200, 0.4);
+}
+body.light-mode #instructions {
+    color: #666;
+}
+body.light-mode #controls,
+body.light-mode #top-right-controls {
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+body.light-mode #controls button,
+body.light-mode #controls select,
+body.light-mode #top-right-controls button,
+body.light-mode #top-right-controls select {
+    background-color: #eee;
+    color: #333; /* SVG icons will inherit this color in light mode */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 8px 12px; /* General button padding */
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+/* Icon-specific padding is handled by the #history-toggle-button, #reload-diagram-button rule */
+
+body.light-mode #controls select,
+body.light-mode #top-right-controls select {
+    padding-right: 25px;
+}
+body.light-mode #controls button:hover:not(:disabled),
+body.light-mode #controls select:hover:not(:disabled),
+body.light-mode #top-right-controls button:hover:not(:disabled),
+body.light-mode #top-right-controls select:hover:not(:disabled) {
+    background-color: #ddd;
+    border-color: #bbb;
+}
+body.light-mode #controls button:disabled,
+body.light-mode #top-right-controls button:disabled {
+    background-color: #e0e0e0;
+    color: #999; /* Disabled SVG icons will inherit this color */
+    cursor: not-allowed;
+    border-color: #d0d0d0;
+}
+body.light-mode #status {
+    background-color: rgba(240, 240, 240, 0.85);
+    color: #333;
+    border: 1px solid #ccc;
+}
+body.light-mode #status.error { color: #c00; }
+body.light-mode #status.success { color: #080; }
+body.light-mode #status.processing { color: #00c; }
+body.light-mode #status.warning { color: #c60; }
+body.light-mode .render-error {
+    color: #c00;
+    background-color: rgba(255, 200, 200, 0.4);
+    border: 1px solid #f88;
+}
+body.light-mode .modal-content {
+    background-color: #fefefe;
+    color: #333;
+    border: 1px solid #ccc;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+body.light-mode .close-button { color: #888; }
+body.light-mode .close-button:hover, body.light-mode .close-button:focus { color: #000; }
+body.light-mode .modal h2 { border-bottom: 1px solid #ddd; }
+body.light-mode #mermaid-code-modal {
+    background-color: #f8f8f8;
+    color: #333;
+    border: 1px solid #ccc;
+}
+body.light-mode #copy-button-modal {
+    background-color: #007bff;
+    color: white;
+}
+body.light-mode #copy-button-modal:hover:not(:disabled) { background-color: #0056b3; }
+body.light-mode #copy-button-modal:disabled { background-color: #ccc; color: #888; }
+body.light-mode .copy-feedback { color: #080; }
+body.light-mode #mermaid-diagram svg .cluster rect,
+body.light-mode #mermaid-diagram svg .subgraph rect {
+    fill: #f0f0f0 !important;
+    stroke: #bbb !important;
+}
+body.light-mode #mermaid-diagram svg .cluster text,
+body.light-mode #mermaid-diagram svg .subgraph text {
+    fill: #444 !important;
+}
+body.light-mode #mermaid-diagram svg .edgeLabel {
+    fill: #333 !important;
+    background-color: #fff !important;
+}
+body.light-mode #mermaid-diagram svg .edgeLabel rect {
+    opacity: 0.8;
+}
+body.light-mode #current-workflow-name-display {
+    color: #555;
+}
+
+/* --- Shared Styles (Independent of Mode) --- */
+#graph-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+#mermaid-diagram {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#mermaid-diagram svg {
+    display: block;
+    max-width: none !important;
+    max-height: none !important;
+}
+#instructions {
+    text-align: center;
+    pointer-events: none;
+    font-size: 1.2em;
+    z-index: 1;
+}
+#instructions p {
+    margin: 5px 0;
+}
+
+/* MODIFICATION START: Adjust #controls and #current-workflow-name-display */
+#controls {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    /* REMOVED the 'right' property */
+    /* right: calc(15px + 230px + 10px); */
+
+    /* ADD max-width to prevent overlap with top-right-controls */
+    /* Calculation: 100vw - left_offset - (est_top_right_width + gap + top_right_right_offset) */
+    max-width: calc(100vw - 15px - 230px - 10px - 15px); /* Simplified: calc(100vw - 270px) */
+    /* Adjust the 230px if the actual width of #top-right-controls is different */
+
+    z-index: 10;
+    display: flex;
+    flex-wrap: wrap; /* Keep wrap for responsiveness */
+    gap: 10px;
+    align-items: center;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+#current-workflow-name-display {
+    font-size: 0.9em;
+    /* Ensure flex-grow is 0 (default or explicit) to size based on content */
+    /* flex-grow: 1; */ /* Commented out or removed */
+    flex-grow: 0;
+    flex-shrink: 1;   /* Allow shrinking and ellipsis when needed */
+    /* flex-basis: auto; is the default, size based on content */
+    min-width: 80px;  /* Maintain a minimum width */
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.8;
+}
+/* MODIFICATION END */
+
+#top-right-controls {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 10;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 8px;
+    border-radius: 5px;
+}
+
+#status {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    z-index: 15;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+    max-width: 90%;
+}
+#status.visible {
+    opacity: 1;
+}
+.render-error {
+    padding: 20px;
+    font-family: monospace;
+    white-space: pre-wrap;
+    border-radius: 5px;
+    max-width: 80%;
+    margin: auto;
+}
+.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0, 0, 0, 0.6); animation-name: fadeIn; animation-duration: 0.3s; }
+.modal-content { margin: 10% auto; padding: 25px; border-radius: 5px; width: 70%; max-width: 800px; position: relative; }
+.close-button { position: absolute; top: 10px; right: 15px; font-size: 28px; font-weight: bold; cursor: pointer; }
+.modal h2 { margin-top: 0; padding-bottom: 10px; }
+#mermaid-code-modal { width: 100%; height: 40vh; box-sizing: border-box; border-radius: 4px; padding: 10px; font-family: monospace; font-size: 0.9em; resize: vertical; margin-bottom: 15px; }
+#copy-button-modal { padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; transition: background-color 0.2s ease; }
+.copy-feedback { display: inline-block; margin-left: 10px; font-size: 0.9em; }
+@keyframes fadeIn { from {opacity: 0} to {opacity: 1} }
+
+/* NEW: Settings Button in top-right controls */
+#settings-button {
+    padding: 8px 10px;
+    font-size: 1.2em; /* For gear icon */
+}
+
+/* NEW: Settings Modal specific styles */
+#settings-modal .modal-content {
+    /* width: 50%; */ /* Uncomment to make settings modal narrower */
+    max-width: 650px; /* Adjust max-width for settings modal */
+}
+
+.settings-form {
+    margin-top: 15px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /* Space between setting items */
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between label and select */
+}
+
+.setting-item label {
+    flex-basis: 200px; /* Fixed width for labels for alignment */
+    flex-shrink: 0;
+    text-align: right;
+    font-size: 0.9em;
+    padding-right: 5px;
+}
+
+.setting-item select {
+    flex-grow: 1;
+    padding: 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+}
+
+/* Theme-specific select styles for settings modal */
+body.dark-mode .setting-item select {
+    background-color: #444;
+    color: #eee;
+    border: 1px solid #666;
+}
+body.dark-mode .setting-item select:focus {
+    outline: none;
+    border-color: #888;
+    box-shadow: 0 0 0 2px rgba(136, 136, 136, 0.5);
+}
+
+body.light-mode .setting-item select {
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #ccc;
+}
+body.light-mode .setting-item select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+#save-settings-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9em;
+}
+body.dark-mode #save-settings-button {
+    background-color: #007bff;
+    color: white;
+}
+body.dark-mode #save-settings-button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+body.dark-mode #save-settings-button:disabled {
+    background-color: #555;
+    color: #aaa;
+    cursor: not-allowed;
+}
+
+body.light-mode #save-settings-button {
+    background-color: #007bff;
+    color: white;
+}
+body.light-mode #save-settings-button:hover:not(:disabled) {
+    background-color: #0056b3;
+}
+body.light-mode #save-settings-button:disabled {
+    background-color: #ccc;
+    color: #888;
+    cursor: not-allowed;
+}
+
+#settings-feedback {
+    /* Reuses .copy-feedback styles for color and margin */
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 0.9em;
+}

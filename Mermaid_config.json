@@ -1,0 +1,67 @@
+{
+  "App_Port": 5567,
+  "Default_Graph_Direction": "LR",
+  "Default_Connector": "-->",
+  "Default_Node_Style": "",
+  "Default_Node_Shape": "rectangle",
+  "Add_Link_Labels": true,
+  "Generate_ComfyUI_Subgraphs": true,
+  "Style_Definitions": {
+    "loaderstyle": "fill:#ccf,stroke:#555,stroke-width:2px",
+    "samplerStyle": "fill:#d8bfd8,stroke:#663399,stroke-width:2px",
+    "vaeStyle": "fill:#ffe0e0,stroke:red,stroke-width:2px",
+    "outputstyle": "fill:#cfc,stroke:green,stroke-width:2px",
+    "processorstyle": "fill:#ccf,stroke:#333,stroke-width:2px,rx:5,ry:5",
+    "imagestyle": "fill:#e0ffff,stroke:blue",
+    "maskstyle": "fill:#lightgrey,stroke:#555",
+    "utilstyle": "fill:#f5f5f5,stroke:#888",
+    "defaultfill": "fill:#eee,stroke:#666",
+    "importantlink": "stroke:red,stroke-width:3px",
+    "greenlink": "stroke:green,stroke-width:2px",
+    "bluelink": "stroke:#007bff,stroke-width:2px",
+    "purplelink": "stroke:purple,stroke-width:1.5px",
+    "lightpurplelink": "stroke:#9370db,stroke-width:2px",
+    "orangelink": "stroke:#fd7e14,stroke-width:2px",
+    "lightredlink": "stroke:#dc3545,stroke-width:2px",
+    "greylink": "stroke:#6c757d,stroke-width:2px",
+    "yellowlink": "stroke:#ffc107,stroke-width:2px"
+  },
+  "Node_Styles": {
+    "LoadImage": {"style": "imagestyle", "shape": "parallelogram"},
+    "PreviewImage": {"style": "fill:#cfc,stroke:green,stroke-width:2px", "shape": "round"},
+    "SaveImage": {"style": "outputstyle", "shape": "round"},
+    "Reroute": {"style": "utilstyle", "shape": "circle"}
+  },
+  "Node_Group_Styles": [
+    {"group_name": "checkpointloader_group", "style": "loaderstyle", "shape": "database"},
+    {"group_name": "vae_group", "style": "fill:#ffe0e0,stroke:red,stroke-width:2px", "shape": "hexagon"},
+    {"group_name": "sampler_group", "style": "samplerStyle", "shape": "rhombus"},
+    {"group_name": "output_group", "style": ""}
+  ],
+  "Data_Type_Link_Styles": [
+    {"data_type": "INT", "style": "", "add_link_label": true},
+    {"data_type": "IMAGE", "style": "bluelink"},
+    {"data_type": "MODEL", "style": "lightpurplelink"},
+    {"data_type": "CLIP", "style": "orangelink"},
+    {"data_type": "VAE", "style": "lightredlink"},
+    {"data_type": "CONDITIONING", "style": "greylink"},
+    {"data_type": "MASK", "style": ""},
+    {"data_type": "LATENT", "style": "yellowlink"}
+  ],
+  "Link_Styles": [
+    {"start_node_type": "CheckpointLoaderSimple", "end_node_type": "VAEEncode", "connector": "-.->", "style": "importantlink", "add_link_label": true},
+    {"start_node_type": "VAEDecode", "end_node_type": "PreviewImage", "style": "greenlink", "add_link_label": false}
+  ],
+  "Link_Group_Styles": [
+    {"type": "from_node", "single_node": "LoadImage", "connector": "-.->", "style": "greenlink", "add_link_label": true},
+    {"type": "to_node", "group_name": "vae_group", "connector": "-->", "style": "", "add_link_label": true},
+    {"type": "single_to_group", "single_node": "CheckpointLoader", "group_name": "vae_group", "connector": "-.->", "style": "importantlink", "add_link_label": true},
+    {"type": "group_to_group", "group_name_1": "vae_group", "group_name_2": "checkpointloader_group", "connector": "==>", "style": "bluelink", "add_link_label": false}
+  ],
+  "Node_Group": [
+    {"group_name": "checkpointloader_group", "nodes": ["CheckpointLoaderSimple", "CheckpointLoader", "easy a1111Loader"]},
+    {"group_name": "vae_group", "nodes": ["VAEDecode", "VAEEncode", "VAELoader"]},
+    {"group_name": "sampler_group", "nodes": ["KSampler", "easy kSampler", "KSamplerAdvanced"]},
+    {"group_name": "output_group", "nodes": ["PreviewImage", "SaveImage"]}
+  ]
+}
