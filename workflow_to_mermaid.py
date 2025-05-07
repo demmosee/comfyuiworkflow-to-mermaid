@@ -3,9 +3,8 @@ import os
 import numbers
 import traceback  # Keep for error handling
 
-# --- Import the style and shape functions ---
 try:
-    # --- MODIFIED: Import new combined function and syntax getter ---
+
     from mermaid_styles import (
         get_node_style_and_shape,
         get_link_style,
@@ -465,8 +464,6 @@ if __name__ == '__main__':
         print(f"An unknown error occurred while processing the workflow file: {e}")
         traceback.print_exc()
 
-# Ensure these are available globally if mermaid_styles import failed and __main__ is run
-# This is defensive coding, already handled by dummy functions at the top.
 if 'adjust_text_color_for_background' not in globals():
     def adjust_text_color_for_background(s): return s
 if '_resolve_style_alias' not in globals():
