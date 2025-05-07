@@ -147,24 +147,24 @@ Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE",
  // Override global
 Default Link Settings: Fallbacks (Default_Connector, Add_Link_Labels in General Configuration).
 
-Supported Link Connector Styles
-When configuring link styles (in Link_Styles, Link_Group_Styles, or Default_Connector), you can use the following values for the connector property:
+### Supported Link Connector Styles
+When configuring link styles (in `Link_Styles`, `Link_Group_Styles`, or `Default_Connector`), you can use the following values for the `connector` property:
+*   `-->` (Solid line with arrow)
+*   `---` (Solid line, no arrow)
+*   `-.->` (Dotted line with arrow)
+*   `-.-` (Dotted line, no arrow)
+*   `==>` (Thick solid line with arrow)
+*   `===` (Thick solid line, no arrow)
+*   `--o` (Solid line with circle at end)
+*   `o--` (Solid line with circle at start)
+*   `o--o` (Solid line with circle at both ends)
+*   `--x` (Solid line with cross at end)
+*   `x--` (Solid line with cross at start)
+*   `x--x` (Solid line with cross at both ends)
+*   `<-->` (Solid line with arrows at both ends)
+*   `<-.->` (Dotted line with arrows at both ends)
+*   `<==>` (Thick solid line with arrows at both ends)
 
---> (Solid line with arrow)
---- (Solid line, no arrow)
--.-> (Dotted line with arrow)
--.- (Dotted line, no arrow)
-==> (Thick solid line with arrow)
-=== (Thick solid line, no arrow)
---o (Solid line with circle at end)
-o-- (Solid line with circle at start)
-o--o (Solid line with circle at both ends)
---x (Solid line with cross at end)
-x-- (Solid line with cross at start)
-x--x (Solid line with cross at both ends)
-<--> (Solid line with arrows at both ends)
-<-.-> (Dotted line with arrows at both ends)
-<==> (Thick solid line with arrows at both ends)
 
 **Link Styling Priority:**
 *   Point-to-Point (`Link_Styles`)
