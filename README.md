@@ -100,8 +100,9 @@ Group-Based (Link_Group_Styles): An array of objects, each with a type:
 type: "single_to_group": Between a single_node (type) and a group_name. Bidirectional.
 ```json
 { "type": "single_to_group", "single_node": "LoadImage", "group_name": "vae_nodes", "style": "stroke:blue" }
-type: "from_node": Links originating from a single_node (type) or a group_name.
 ```
+type: "from_node": Links originating from a single_node (type) or a group_name.
+
 ```json
 { "type": "from_node", "single_node": "LoadImage", "style": "stroke:green" }
 ```
@@ -120,9 +121,10 @@ Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE",
 ```json
 "Data_Type_Link_Styles": [
   { "data_type": "IMAGE", "style": "stroke:cyan,stroke-width:2px" },
-  { "data_type": "LATENT", "add_link_label": true } // Override global
+  { "data_type": "LATENT", "add_link_label": true }
 ]
 ```
+ // Override global
 Default Link Settings: Fallbacks (Default_Connector, Add_Link_Labels in General Configuration).
 
 **Link Styling Priority:**
