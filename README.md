@@ -34,42 +34,45 @@ Global settings for the diagram:
     *   Example: `"App_Port": 5567`
 ### 2. Style Definitions (`Style_Definitions`)
 Define reusable style aliases. The key is your alias name, and the value is the Mermaid CSS string.
-<JSON>
+```json
 "Style_Definitions": {
   "loaderStyle": "fill:#ccf,stroke:#555",
   "importantLink": "stroke:red,stroke-width:3px"
 }
-
+```
 ### 3. Node Group Definitions (Node_Group)
 Map ComfyUI node types to custom group names. These group names are used for group-based styling.
 
 group_name: Your custom name for the group.
 nodes: An array of ComfyUI node type strings belonging to this group.
-<JSON>
+```json
 "Node_Group": [
   {
     "group_name": "vae_nodes",
     "nodes": ["VAEDecode", "VAEEncode", "VAELoader"]
   }
 ]
+```
 ### 4. Node Styling
 You can style nodes based on their specific type, the group they belong to, or use a default style. Each rule can specify style (CSS string or alias) and/or shape.
 
 Specific Node Type (Node_Styles): Styles for individual ComfyUI node types.
 
 Keys are node types (e.g., "LoadImage"). Values are objects with style and/or shape.
-<JSON>
+```json
 "Node_Styles": {
   "LoadImage": { "style": "loaderStyle", "shape": "subroutine" },
   "PreviewImage": { "shape": "round" } // Style inherited
 }
+```
 Node Group (Node_Group_Styles): Styles for nodes within a defined group.
 
 An array of objects, each with group_name, style, and/or shape.
-<JSON>
+```json
 "Node_Group_Styles": [
   { "group_name": "vae_nodes", "style": "fill:#ffe0e0", "shape": "hexagon" }
 ]
+```
 Default Node Style & Shape: Fallback styles (Default_Node_Style, Default_Node_Shape in General Configuration).
 
 Node Styling Priority:
@@ -81,7 +84,7 @@ Customize link appearance (connector, style, label visibility) using various rul
 
 Point-to-Point (Link_Styles): For links between specific start_node_type and end_node_type.
 
-<JSON>
+```json
 "Link_Styles": [
   {
     "start_node_type": "CheckpointLoaderSimple",
@@ -90,27 +93,32 @@ Point-to-Point (Link_Styles): For links between specific start_node_type and end
     "connector": "-.->"
   }
 ]
+```
 Group-Based (Link_Group_Styles): An array of objects, each with a type:
 
 type: "single_to_group": Between a single_node (type) and a group_name. Bidirectional.
-<JSON>
+```json
 { "type": "single_to_group", "single_node": "LoadImage", "group_name": "vae_nodes", "style": "stroke:blue" }
 type: "from_node": Links originating from a single_node (type) or a group_name.
-<JSON>
+```
+```json
 { "type": "from_node", "single_node": "LoadImage", "style": "stroke:green" }
 type: "to_node": Links ending at a single_node (type) or a group_name.
-<JSON>
+```
+```json
 { "type": "to_node", "group_name": "output_group", "style": "stroke:purple", "add_link_label": false }
 type: "group_to_group": Between group_name_1 and group_name_2. Bidirectional.
-<JSON>
+```
+```json
 { "type": "group_to_group", "group_name_1": "vae_nodes", "group_name_2": "sampler_nodes", "connector": "---" }
 Data Type (Data_Type_Link_Styles): Based on the link's data_type (e.g., "IMAGE", "MODEL").
-
-<JSON>
+```
+```json
 "Data_Type_Link_Styles": [
   { "data_type": "IMAGE", "style": "stroke:cyan,stroke-width:2px" },
   { "data_type": "LATENT", "add_link_label": true } // Override global
 ]
+```
 Default Link Settings: Fallbacks (Default_Connector, Add_Link_Labels in General Configuration).
 
 Link Styling Priority:
