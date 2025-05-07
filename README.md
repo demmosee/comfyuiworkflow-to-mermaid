@@ -12,7 +12,8 @@ Into clear and simple mermaid charts like this:
 3. Freely change the display style of the workflow in the Mermaid chart through multiple built-in strategies.
 4. Supports detecting workflow groups and supports dark mode.
 
-Getting Started:
+
+### Getting Started:
 Download the latest release package, open wf2mermaid.exe, drag the comfyuiworkflow json into the webui interface to display the workflow's mermaid chart.
 ## Configuring Mermaid Styles (`Mermaid_config.json`)
 Customize your Mermaid diagrams using `Mermaid_config.json`. If this file is missing or invalid, default settings are applied.
