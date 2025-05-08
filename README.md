@@ -188,4 +188,4 @@ When configuring link styles (in `Link_Styles`, `Link_Group_Styles`, or `Default
 *Higher priority settings override lower ones for the properties they define (connector, style, or add_link_label).*
 ### Omitting Parameters
 If a styling rule (for nodes or links) doesn't specify a parameter (e.g., `shape` for nodes, `style` for links), that parameter's value will be determined by the next applicable rule in the priority list or by the global defaults.
-展开
+
