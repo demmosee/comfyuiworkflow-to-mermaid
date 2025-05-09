@@ -9,6 +9,11 @@ Into clear and simple mermaid charts like this:
 
 ![image](https://github.com/user-attachments/assets/d72edaa4-15c2-498b-9d55-f0e026e3f0d7)
 
+and like this:
+
+![Snipaste_2025-05-09_08-53-03](https://github.com/user-attachments/assets/b178eeb1-a8f3-4583-b4b4-ccc3ccfc4136)
+
+
 It can help you quickly understand the workflow's process and logic without being confused by tangled lines.
 
 ### Key Features:
